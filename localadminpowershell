@@ -1,0 +1,15 @@
+# Define account details
+$userName = "YourAdminUsername"
+$password = ConvertTo-SecureString "YourPassword" -AsPlainText -Force
+
+# Check if user already exists
+if (-not (Get-LocalUser -Name $userName -ErrorAction SilentlyContinue)) {
+    # Create the user
+    New-LocalUser -Name $userName -Password $password -FullName "Admin User" -Description "Local Administrator Account"
+
+    # Add user to Administrators group
+    Add-LocalGroupMember -Group "Administrators" -Member $userName
+    Write-Host "User $userName added to Administrators group"
+} else {
+    Write-Host "User $userName already exists"
+}
